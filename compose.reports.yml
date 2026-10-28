@@ -1,0 +1,32 @@
+# Independent stack: does not reuse Demetra containers, ports or volumes.
+name: demetra-dariq-reports
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: reports_local_root
+      MYSQL_DATABASE: dariq_reports
+      MYSQL_USER: reports
+      MYSQL_PASSWORD: reports_local_password
+    volumes:
+      - reports_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u reports -preports_local_password --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  app:
+    build: .
+    environment:
+      DEMETRA_ADMIN_EMAIL: ${DEMETRA_ADMIN_EMAIL:-admin@demetra.local}
+      DEMETRA_ADMIN_PASSWORD: ${DEMETRA_ADMIN_PASSWORD:-}
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/dariq_reports?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: reports
+      SPRING_DATASOURCE_PASSWORD: reports_local_password
+    ports:
+      - "127.0.0.1:8093:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  reports_data:

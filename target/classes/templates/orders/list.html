@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Поръчки — Demetra</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><div th:replace="~{fragments/nav :: nav}"></div>
+<main class="page-container reports-page">
+    <div class="page-header"><div class="breadcrumbs">Организатор / Регистрации за събития</div><h1>Поръчки</h1></div>
+    <p>Поръчките са регистрациите за вашите събития. Филтрите се прилагат едновременно по датата и часа на регистрацията.</p>
+    <form th:replace="~{fragments/registration-filters :: filters('/orders')}"></form>
+    <h2 th:text="${'Намерени поръчки: ' + #lists.size(orders)}"></h2>
+    <div class="table-wrap"><table class="data-table"><thead><tr><th>№</th><th>Събитие</th><th>Участник</th><th>Дата и час на поръчката</th><th>Статус</th><th>Плащане</th></tr></thead>
+    <tbody><tr th:each="o : ${orders}"><td th:text="${o.id}"></td><td th:text="${o.event.title}"></td><td th:text="${o.user.name}"></td><td th:text="${#temporals.format(o.createdAt,'dd.MM.yyyy HH:mm')}"></td><td th:text="${o.status}"></td><td>
+        <span th:if="${paid.containsKey(o.id)}" th:text="${#numbers.formatDecimal(paid.get(o.id),1,2) + ' USD получени'}"></span>
+        <form th:if="${!paid.containsKey(o.id) and o.status.name() == 'CONFIRMED'}" method="post" th:action="@{/orders/{id}/paid(id=${o.id})}"><button class="btn btn-secondary" th:text="${'Отбележи получени ' + #numbers.formatDecimal(o.event.price,1,2) + ' USD'}"></button></form>
+        <span th:if="${!paid.containsKey(o.id) and o.status.name() != 'CONFIRMED'}">Няма плащане</span>
+    </td></tr><tr th:if="${#lists.isEmpty(orders)}"><td colspan="6">Няма поръчки за избраните филтри.</td></tr></tbody></table></div>
+    <p class="event-meta">Отбелязвайте плащане след действително получаване на сумата. Повторното отбелязване не я начислява повторно. Сумите са в USD, както цените в проекта.</p>
+</main></body></html>

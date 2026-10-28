@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head><meta charset="UTF-8"><title>Отчети — Demetra</title><style>:root {
+  --navy: #162a43;
+  --navy-light: #2d4a7a;
+  --gold: rgb(167, 154, 14);
+  --cream: #fdfbf7;
+  --muted: #5c6e85;
+  --danger: #e53e3e;
+  --success: #38a169;
+  --border: rgba(22, 42, 67, 0.15);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+}
+
+a { color: inherit; text-decoration: none; }
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.1rem; }
+.brand-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--gold); color: var(--navy); font-weight: 900;
+}
+
+.nav-links { display: flex; align-items: center; gap: 20px; }
+.nav-links a { color: var(--cream); opacity: 0.9; }
+.nav-links a:hover { opacity: 1; text-decoration: underline; }
+.nav-cta {
+  background: var(--gold); color: var(--navy) !important;
+  padding: 6px 14px; border-radius: 6px; font-weight: 700;
+}
+.nav-user { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; opacity: 0.9; }
+
+.inline-form { display: inline; }
+.link-button {
+  background: none; border: none; color: var(--cream); opacity: 0.85;
+  cursor: pointer; font: inherit; text-decoration: underline; padding: 0;
+}
+
+.page-container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+.narrow-container { max-width: 440px; margin: 48px auto; padding: 0 24px; }
+
+.page-header { margin-bottom: 28px; }
+.page-header h1 { font-size: 1.9rem; margin: 4px 0 0; }
+.breadcrumbs { font-size: 0.85rem; color: var(--muted); }
+
+.card {
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  padding: 24px;
+}
+
+.form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-weight: 600; font-size: 0.9rem; }
+.form-group input, .form-group textarea, .form-group select {
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font: inherit;
+}
+.form-row { display: flex; gap: 16px; }
+.form-row .form-group { flex: 1; }
+
+.btn {
+  display: inline-block; padding: 10px 20px; border-radius: 6px; border: none;
+  background: var(--navy); color: var(--cream); font-weight: 700; cursor: pointer; font: inherit;
+}
+.btn:hover { background: var(--navy-light); }
+.btn-secondary { background: transparent; color: var(--navy); border: 1px solid var(--border); }
+.btn-danger { background: var(--danger); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.alert { padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.9rem; }
+.alert-error { background: rgba(229, 62, 62, 0.1); color: var(--danger); border: 1px solid rgba(229,62,62,0.3); }
+.alert-success { background: rgba(56, 161, 105, 0.1); color: var(--success); border: 1px solid rgba(56,161,105,0.3); }
+
+.auth-card { text-align: left; }
+.auth-card h2 { margin-top: 0; }
+.role-toggle { display: flex; gap: 8px; margin-bottom: 20px; }
+.role-toggle label {
+  flex: 1; text-align: center; padding: 10px; border: 1px solid var(--border); border-radius: 6px;
+  cursor: pointer; font-weight: 600; font-size: 0.9rem;
+}
+.role-toggle input { display: none; }
+.role-toggle input:checked + span { color: var(--gold); }
+.auth-footer { margin-top: 18px; font-size: 0.9rem; color: var(--muted); }
+
+.events-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 20px;
+}
+.event-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.event-card-image {
+  height: 100px; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  display: flex; align-items: center; justify-content: space-between; padding: 12px; color: var(--cream);
+}
+.event-card-body { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.event-card-body h3 { margin: 0; font-size: 1.1rem; }
+.event-meta { font-size: 0.85rem; color: var(--muted); }
+.event-card-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 8px; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;
+}
+.badge-open { background: rgba(56,161,105,0.15); color: var(--success); }
+.badge-full { background: rgba(229,62,62,0.15); color: var(--danger); }
+.badge-registered { background: rgba(167,154,14,0.18); color: var(--gold); }
+.badge-waitlisted { background: rgba(22,42,67,0.1); color: var(--navy); }
+
+.no-events { text-align: center; padding: 60px 20px; color: var(--muted); }
+
+.event-detail-hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: var(--cream); padding: 32px; border-radius: 10px; margin-bottom: 24px;
+}
+.event-detail-hero .tag { font-size: 0.8rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.05em; }
+.event-detail-hero h1 { margin: 8px 0; }
+.event-detail-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; opacity: 0.9; }
+
+.event-detail-body { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+.sidebar-card { margin-bottom: 16px; }
+.sidebar-label { font-size: 0.75rem; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.sidebar-price { font-size: 1.8rem; font-weight: 800; margin: 4px 0 12px; }
+.cap-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 4px 0; }
+
+@media (max-width: 720px) {
+  .event-detail-body { grid-template-columns: 1fr; }
+  .form-row { flex-direction: column; }
+}
+
+.reports-page { max-width: 1320px; }
+.filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.filter-grid .form-group, .report-controls .form-group { margin: 0; min-width: 0; }
+.filter-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.report-controls { display: flex; align-items: end; gap: 20px; }
+.report-controls .form-group { flex: 1; }
+.report-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin: 24px 0; }
+.report-heading h2 { margin: 0; }
+.report-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.report-metrics span { display: block; color: var(--muted); margin-bottom: 8px; }
+.report-metrics strong { font-size: 1.8rem; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 24px; }
+.data-table { width: 100%; border-collapse: collapse; background: white; font-size: .9rem; }
+.data-table th { background: #edf1f6; text-align: left; font-weight: 700; }
+.data-table td, .data-table th { padding: 13px 14px; border-bottom: 1px solid var(--border); }
+.data-table tr:last-child td { border-bottom: 0; }
+.data-table small { display: block; color: var(--muted); margin-top: 4px; }
+.data-table .btn { padding: 6px 10px; font-size: .8rem; }
+@media (max-width: 850px) {
+  .filter-grid { grid-template-columns: repeat(2, 1fr); }
+  .report-controls { flex-wrap: wrap; }
+  .report-metrics { grid-template-columns: 1fr; }
+  .site-nav, .nav-links { flex-wrap: wrap; gap: 12px; }
+}
+</style></head>
+<body><header class="site-nav">
+    <a class="brand" href="/events">
+        <span class="brand-icon">D</span>
+        <span class="brand-name">Demetra</span>
+    </a>
+    <nav class="nav-links">
+        <a href="/events">Events</a>
+        <span>
+            <a href="/events/new">Host an event</a>
+            <a href="/reports">Отчети</a>
+        </span>
+        <a href="/photos">Photos</a>
+        <a href="/profile">My profile</a>
+        <span class="nav-user">
+            <span>reports@example.com</span>
+            <form method="post" action="/logout" class="inline-form"><input type="hidden" name="_csrf" value="Bq6Z-cGLdqeP5SMgTb9Tg2altNkvuX612ied_mhxJB6wEgvKMp39z_juFZKihhZGLpJnsVDAmbsWjkuY60L4zF9EF3rUIG3-"/>
+                <button type="submit" class="link-button">Sign out</button>
+            </form>
+        </span>
+        
+    </nav>
+</header>
+<main class="page-container reports-page">
+    <div class="page-header"><div class="breadcrumbs">Организатор / Справки за събития</div><h1>Отчети</h1></div>
+    <p>Изберете дата от крайния месец и период. Отчетът включва целите календарни месеци и само вашите събития.</p>
+    <form method="get" action="/reports" class="card report-controls">
+        <div class="form-group"><label for="report-date">Календар за крайния месец</label><input type="date" id="report-date" name="date" value="2026-09-19" min="2025-11-01" max="2026-10-19" required></div>
+        <div class="form-group"><label for="months">Период</label><select id="months" name="months"><option value="1">1 месец</option><option value="6">6 месеца</option><option value="12" selected="selected">12 месеца</option></select></div>
+        <button class="btn">Покажи отчет</button>
+    </form>
+    <p class="event-meta">Достъпни са последните 12 календарни месеца, включително текущия. Целият избран период трябва да попада в този диапазон.</p>
+    <div class="alert alert-error" role="alert">Периодът трябва да е в последните 12 календарни месеца.</div>
+    
+</main></body></html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${photo.title + ' — Demetra'}">Photo — Demetra</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"><link rel="stylesheet" th:href="@{/css/photos.css}">
+    <link rel="icon" th:href="@{/images/favicon.svg}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="page-container">
+    <a class="text-link" th:href="@{/photos}">← Back to photos</a>
+    <div class="alert alert-success" role="status" th:if="${message}" th:text="${message}"></div>
+    <div class="page-header"><h1 th:text="${photo.title}"></h1>
+        <p th:text="${'Uploaded ' + #temporals.format(photo.uploadedAt, 'dd MMM yyyy, HH:mm')}"></p></div>
+    <img class="photo-full" th:src="@{/photos/{id}/image(id=${photo.id})}" th:alt="${photo.title}">
+    <p class="photo-description" th:if="${!#strings.isEmpty(photo.description)}" th:text="${photo.description}"></p>
+    <p sec:authorize="!hasRole('ADMIN')">Saved to <a class="text-link" th:href="@{/profile}">your viewed photos</a>.</p>
+</main>
+</body>
+</html>

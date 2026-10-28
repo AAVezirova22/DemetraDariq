@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Отчети — Demetra</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><div th:replace="~{fragments/nav :: nav}"></div>
+<main class="page-container reports-page">
+    <div class="page-header"><div class="breadcrumbs">Организатор / Справки за събития</div><h1>Отчети</h1></div>
+    <p>Изберете дата от крайния месец и период. Отчетът включва целите календарни месеци и само вашите събития.</p>
+    <form method="get" action="/reports" class="card report-controls">
+        <div class="form-group"><label for="report-date">Календар за крайния месец</label><input type="date" id="report-date" name="date" th:value="${date}" th:min="${minDate}" th:max="${maxDate}" required></div>
+        <div class="form-group"><label for="months">Период</label><select id="months" name="months"><option value="1" th:selected="${months == 1}">1 месец</option><option value="6" th:selected="${months == 6}">6 месеца</option><option value="12" th:selected="${months == 12}">12 месеца</option></select></div>
+        <button class="btn">Покажи отчет</button>
+    </form>
+    <p class="event-meta">Достъпни са последните 12 календарни месеца, включително текущия. Целият избран период трябва да попада в този диапазон.</p>
+    <div th:if="${error}" class="alert alert-error" role="alert" th:text="${error}"></div>
+    <section th:if="${report != null}">
+        <div class="report-heading"><h2 th:text="${#temporals.format(report.from,'dd.MM.yyyy') + ' – ' + #temporals.format(report.until.minusDays(1),'dd.MM.yyyy')}"></h2><div class="filter-actions">
+            <a class="btn btn-secondary" target="_blank" th:href="@{/reports/pdf(date=${date},months=${months})}">Преглед на PDF</a>
+            <a class="btn" th:href="@{/reports/pdf(date=${date},months=${months},download=true)}">Изтегли PDF</a>
+        </div></div>
+        <div class="report-metrics"><div class="card"><span>Събития</span><strong th:text="${#lists.size(report.events)}"></strong></div><div class="card"><span>Потвърдени регистрации</span><strong th:text="${report.confirmed}"></strong></div><div class="card"><span>Получени плащания</span><strong th:text="${#numbers.formatDecimal(report.collected,1,2) + ' USD'}"></strong></div></div>
+        <p class="event-meta">Периодът се определя по датата на събитието. Сумите са всички ръчно отбелязани получени плащания за тези събития, независимо от датата на плащане. Неплатените регистрации не добавят приход. Няма модул за възстановявания. Събития без дата не участват.</p>
+        <h2>Месечна справка</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>Месец</th><th>Събития</th><th>Потвърдени регистрации</th><th>Получени плащания</th></tr></thead><tbody><tr th:each="m : ${report.monthly}"><td th:text="${m.month}"></td><td th:text="${m.events}"></td><td th:text="${m.confirmed}"></td><td th:text="${#numbers.formatDecimal(m.collected,1,2) + ' USD'}"></td></tr></tbody></table></div>
+        <h2>Събития в периода</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>Събитие и вид</th><th>Дата</th><th>Статус</th><th>Потвърдени</th><th>Чакащи</th><th>Отказани</th><th>Получени</th></tr></thead><tbody><tr th:each="e : ${report.events}"><td><span th:text="${e.title}"></span><small th:text="${e.category ?: 'Без категория'}"></small></td><td th:text="${#temporals.format(e.startsAt,'dd.MM.yyyy HH:mm')}"></td><td th:text="${e.status}"></td><td th:text="${e.confirmed}"></td><td th:text="${e.waitlisted}"></td><td th:text="${e.cancelled}"></td><td th:text="${#numbers.formatDecimal(e.collected,1,2) + ' USD'}"></td></tr><tr th:if="${#lists.isEmpty(report.events)}"><td colspan="7">Няма събития за избрания период.</td></tr></tbody></table></div>
+    </section>
+</main></body></html>

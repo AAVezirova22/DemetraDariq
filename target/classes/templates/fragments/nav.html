@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="nav" class="site-nav">
+    <a class="brand" href="/events">
+        <span class="brand-icon">D</span>
+        <span class="brand-name">Demetra</span>
+    </a>
+    <nav class="nav-links">
+        <a href="/events">Events</a>
+        <span sec:authorize="hasRole('ORGANIZER')">
+            <a href="/events/new">Host an event</a>
+            <a href="/reports">Отчети</a>
+        </span>
+        <a href="/photos" sec:authorize="isAuthenticated()">Photos</a>
+        <a href="/profile" sec:authorize="isAuthenticated()">My profile</a>
+        <span sec:authorize="isAuthenticated()" class="nav-user">
+            <span sec:authentication="name">user@example.com</span>
+            <form method="post" th:action="@{/logout}" class="inline-form">
+                <button type="submit" class="link-button">Sign out</button>
+            </form>
+        </span>
+        <span sec:authorize="isAnonymous()">
+            <a href="/login">Sign in</a>
+            <a href="/register" class="nav-cta">Register</a>
+        </span>
+    </nav>
+</header>
+</body>
+</html>

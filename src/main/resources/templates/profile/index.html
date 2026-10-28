@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My profile — Demetra</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"><link rel="stylesheet" th:href="@{/css/photos.css}">
+    <link rel="icon" th:href="@{/images/favicon.svg}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="page-container">
+    <div class="page-header"><div class="breadcrumbs">Demetra / My profile</div><h1 th:text="${isAdmin ? 'Admin profile' : 'My profile'}"></h1></div>
+    <section class="card profile-details" aria-label="Account details">
+        <div><h2 th:text="${profileUser.name}"></h2><p th:text="${profileUser.email}"></p></div>
+        <span class="badge badge-open" th:text="${isAdmin ? 'Administrator' : (profileUser.role.name() == 'ORGANIZER' ? 'Teacher' : 'Student')}"></span>
+    </section>
+    <section th:if="${isAdmin}" aria-labelledby="uploaded-heading">
+        <div class="report-heading"><h2 id="uploaded-heading">Uploaded photos</h2><a class="btn" th:href="@{/photos}">Upload a photo</a></div>
+        <p>Photos you have uploaded to the community gallery.</p>
+        <p class="card photo-empty" th:if="${photoPage.empty}">You have not uploaded any photos yet.</p>
+        <div class="photo-grid"><article class="photo-card" th:each="photo : ${photoPage.content}">
+            <a th:href="@{/photos/{id}(id=${photo.id})}"><img th:src="@{/photos/{id}/thumbnail(id=${photo.id})}" th:alt="${photo.title}" loading="lazy" width="640" height="480">
+                <div class="photo-card-body"><h3 th:text="${photo.title}"></h3><small th:text="${'Uploaded ' + #temporals.format(photo.uploadedAt, 'dd MMM yyyy, HH:mm')}"></small></div></a>
+        </article></div>
+        <nav th:replace="~{photos/fragments :: pagination(${photoPage}, '/profile')}"></nav>
+    </section>
+    <section th:unless="${isAdmin}" aria-labelledby="viewed-heading">
+        <div class="report-heading"><h2 id="viewed-heading">Viewed photos</h2><a class="btn" th:href="@{/photos}">Browse photos</a></div>
+        <p>Photos you have opened, with your most recently viewed photos first.</p>
+        <p class="card photo-empty" th:if="${viewPage.empty}">You have not viewed any photos yet. Open a photo in the gallery to save it here.</p>
+        <div class="photo-grid"><article class="photo-card" th:each="view : ${viewPage.content}">
+            <a th:href="@{/photos/{id}(id=${view.photo.id})}"><img th:src="@{/photos/{id}/thumbnail(id=${view.photo.id})}" th:alt="${view.photo.title}" loading="lazy" width="640" height="480">
+                <div class="photo-card-body"><h3 th:text="${view.photo.title}"></h3><small th:text="${'Viewed ' + #temporals.format(view.viewedAt, 'dd MMM yyyy, HH:mm')}"></small></div></a>
+        </article></div>
+        <nav th:replace="~{photos/fragments :: pagination(${viewPage}, '/profile')}"></nav>
+    </section>
+</main>
+</body>
+</html>

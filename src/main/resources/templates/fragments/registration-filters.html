@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<body>
+<form th:fragment="filters(listUrl)" method="get" th:action="@{${listUrl}}" class="card filter-grid">
+    <div class="form-group"><label for="week">Седмица по ISO</label><input id="week" type="week" name="week" th:value="${week}"></div>
+    <div class="form-group"><label for="date">Точна дата</label><input id="date" type="date" name="date" th:value="${date}"></div>
+    <div class="form-group"><label for="day">Ден от седмицата</label><select id="day" name="day"><option value="">Всички дни</option><option th:each="d : ${#numbers.sequence(1,7)}" th:value="${d}" th:selected="${day == d}" th:text="${({'Понеделник','Вторник','Сряда','Четвъртък','Петък','Събота','Неделя'})[d - 1]}"></option></select></div>
+    <div class="form-group"><label for="hour">Час на регистрацията</label><select id="hour" name="hour"><option value="">Всички часове</option><option th:each="h : ${#numbers.sequence(0,23)}" th:value="${h}" th:selected="${hour == h}" th:text="${#numbers.formatInteger(h,2) + ':00 – ' + #numbers.formatInteger(h,2) + ':59'}"></option></select></div>
+    <div class="form-group"><label for="sort">Сортиране по дата и час</label><select id="sort" name="sort"><option value="desc" th:selected="${sort == 'desc'}">Най-новите първо</option><option value="asc" th:selected="${sort == 'asc'}">Най-старите първо</option></select></div>
+    <div class="filter-actions"><button type="submit" class="btn">Филтрирай</button><a th:href="@{${listUrl}}" class="btn btn-secondary">Изчисти</a></div>
+</form>
+</body>
+</html>

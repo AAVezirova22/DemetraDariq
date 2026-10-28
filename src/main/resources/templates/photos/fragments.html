@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><body>
+<nav th:fragment="pagination(result, path)" class="photo-pagination" aria-label="Photo pages" th:if="${result.totalPages > 1}">
+    <a class="btn btn-secondary" th:if="${result.hasPrevious()}" th:href="@{${path}(page=${result.number - 1})}">Previous</a>
+    <span th:text="${'Page ' + (result.number + 1) + ' of ' + result.totalPages}"></span>
+    <a class="btn btn-secondary" th:if="${result.hasNext()}" th:href="@{${path}(page=${result.number + 1})}">Next</a>
+</nav>
+</body></html>

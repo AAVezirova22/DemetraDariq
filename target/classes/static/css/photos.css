@@ -1,0 +1,20 @@
+.upload-panel { margin-bottom: 28px; }
+.upload-panel h2, .profile-details h2 { margin-top: 0; }
+.upload-panel form { max-width: 680px; }
+.text-link { text-decoration: underline; text-underline-offset: 3px; }
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 20px; }
+.photo-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.photo-card a { display: block; height: 100%; }
+.photo-card a:hover h3 { text-decoration: underline; }
+.photo-card a:focus-visible, .text-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.photo-card img { display: block; width: 100%; height: 210px; object-fit: cover; background: #edf1f6; }
+.photo-card-body { padding: 16px; overflow-wrap: anywhere; }
+.photo-card h3 { margin: 0 0 8px; }
+.photo-card small { color: var(--muted); }
+.photo-full { display: block; width: 100%; max-height: 75vh; object-fit: contain; background: #edf1f6; border-radius: 10px; }
+.photo-description { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; }
+.photo-empty { color: var(--muted); padding: 40px 24px; text-align: center; }
+.photo-pagination { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 28px; }
+.profile-details { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; overflow-wrap: anywhere; }
+.profile-details p { margin-bottom: 0; }
+@media (max-width: 720px) { .site-nav, .nav-links, .nav-user { flex-wrap: wrap; gap: 12px; } }

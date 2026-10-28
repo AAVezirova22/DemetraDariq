@@ -1,0 +1,3 @@
+Status: 200
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="demetra-report-2025-11-01-2026-10-31.pdf"

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Photos — Demetra</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"><link rel="stylesheet" th:href="@{/css/photos.css}">
+    <link rel="icon" th:href="@{/images/favicon.svg}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="page-container">
+    <div class="page-header"><div class="breadcrumbs">Demetra / Photos</div><h1>Photo gallery</h1>
+        <p>Discover moments from our community. Open a photo to see it in full.</p></div>
+    <div class="alert alert-error" role="alert" th:if="${error}" th:text="${error}"></div>
+    <section class="card upload-panel" sec:authorize="hasRole('ADMIN')" aria-labelledby="upload-heading">
+        <h2 id="upload-heading">Upload a photo</h2>
+        <p>Your uploads are saved in <a class="text-link" th:href="@{/profile}">your admin profile</a>.</p>
+        <form method="post" th:action="@{/photos}" enctype="multipart/form-data">
+            <div class="form-group"><label for="title">Title</label><input id="title" name="title" th:value="${title}" maxlength="160" required></div>
+            <div class="form-group"><label for="description">Description (optional)</label><textarea id="description" name="description" maxlength="2000" rows="3" th:text="${description}"></textarea></div>
+            <div class="form-group"><label for="file">Photo</label><input id="file" name="file" type="file" accept="image/jpeg,image/png" aria-describedby="photo-help" required>
+                <small id="photo-help">JPEG or PNG, up to 5 MB and 20 megapixels. Image metadata is removed.</small></div>
+            <button class="btn" type="submit">Upload photo</button>
+        </form>
+    </section>
+    <p sec:authorize="!hasRole('ADMIN')">Photos you open are saved in <a class="text-link" th:href="@{/profile}">your viewed photos</a>.</p>
+    <div class="report-heading"><h2>All photos</h2><span th:text="${photoPage.totalElements + ' photos'}"></span></div>
+    <p class="card photo-empty" th:if="${photoPage.empty}">No photos here yet. Once an administrator uploads photos, they will appear here.</p>
+    <div class="photo-grid">
+        <article class="photo-card" th:each="photo : ${photoPage.content}">
+            <a th:href="@{/photos/{id}(id=${photo.id})}">
+                <img th:src="@{/photos/{id}/thumbnail(id=${photo.id})}" th:alt="${photo.title}" loading="lazy" width="640" height="480">
+                <div class="photo-card-body"><h3 th:text="${photo.title}"></h3><small th:text="${'Uploaded ' + #temporals.format(photo.uploadedAt, 'dd MMM yyyy')}"></small></div>
+            </a>
+        </article>
+    </div>
+    <nav th:replace="~{photos/fragments :: pagination(${photoPage}, '/photos')}"></nav>
+</main>
+</body>
+</html>
